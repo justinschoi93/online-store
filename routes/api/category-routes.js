@@ -50,17 +50,16 @@ router.post('/', async (req, res) => {
 
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
-  try{
-    const categoryData = await Category.findByPk(req.params.id, {
-      include: [{model: Product}]
-    });
-
-    await categoryData.set(req.body).save();
-
-    res.status(200).json(categoryData)
-  }catch (err) {
+  Category.update(req.body, {
+    where: {
+      id: req.params.id
+    },
+    
+  }).then((category)=>{
+    return res.status(200).json(category)
+  }). catch((err) => {
     res.status(500).json(err)
-  }
+  })
 });
 
 //DELETE ROUTE
@@ -73,15 +72,22 @@ router.delete('/:id', async (req, res) => {
       }
     });
 
-    if (!categoryData) {
-      res.status(404).json({ message: 'No category found with this id!' });
-      return;
-    }
-
+    console.log(categoryData);
     res.status(200).json(categoryData);
   } catch (err) {
     res.status(500).json(err);
   }
+  // Category.destroy({
+  //   where: {
+  //     id: req.params.id
+  //   }
+  // }).then((categoryData) => {
+
+  //   console.log(categoryData);
+  //   return res.status(200).json(categoryData)
+  // }).catch((err)=>{
+  //   res.status(500).json(err);
+  // })
 });
 
 module.exports = router;
