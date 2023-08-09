@@ -3,7 +3,7 @@ const { Category, Product } = require('../../models');
 
 // The API ROUTES
 
-//api/categories
+//Will select for  the entire Category table
 router.get('/', async (req, res) => {
   try {
     const categoryData = await Category.findAll(
@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
   
 });
 
-
+//GET ROUTE: will select for specific category
 router.get('/:id', async (req, res) => {
 
   try {
@@ -29,6 +29,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+//POST ROUTE: Will either create or bulkcreate entries for the Category table
 router.post('/', async (req, res) => {
   // create a new category
   try {
@@ -48,6 +49,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+//PUT ROUTE: Will update specific entires of the Category Table
 router.put('/:id', async (req, res) => {
   // update a category by its `id` value
   Category.update(req.body, {
@@ -62,7 +64,7 @@ router.put('/:id', async (req, res) => {
   })
 });
 
-//DELETE ROUTE
+//DELETE ROUTE: Will delete specific rows of Category Table
 
 router.delete('/:id', async (req, res) => {
   try {
@@ -77,17 +79,7 @@ router.delete('/:id', async (req, res) => {
   } catch (err) {
     res.status(500).json(err);
   }
-  // Category.destroy({
-  //   where: {
-  //     id: req.params.id
-  //   }
-  // }).then((categoryData) => {
 
-  //   console.log(categoryData);
-  //   return res.status(200).json(categoryData)
-  // }).catch((err)=>{
-  //   res.status(500).json(err);
-  // })
 });
 
 module.exports = router;

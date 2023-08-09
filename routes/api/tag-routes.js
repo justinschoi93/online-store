@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Tag, Product, ProductTag } = require('../../models');
 
-// The `/api/tags` endpoint
+// GET ROUTE: Will select for entire Tag table
 
 router.get('/', async (req, res) => {
  try{
@@ -12,11 +12,10 @@ router.get('/', async (req, res) => {
   return res.status(200).json(tagData);
  } catch (err) {
   res.status(500).json(err);
- }
-
-  
+ } 
 });
 
+// GET ROUTE: Will select for specific row of Tag table
 router.get('/:id', async (req, res) => {
  
   try{
@@ -33,6 +32,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// POST ROUTE: Will create a row or rows for Tag table
 router.post('/', async (req, res) => {
   // create a new tag
   try {
@@ -54,6 +54,7 @@ router.post('/', async (req, res) => {
   }
 });
 
+// PUT ROUTE: Will make changes to specified row of Tag table
 router.put('/:id', (req, res) => {
   // update a tag's name by its `id` value
   Tag.update(req.body, {
@@ -68,6 +69,7 @@ router.put('/:id', (req, res) => {
   })
 });
 
+// DELETE ROUTE: Will delete a specified row of the Tag table
 router.delete('/:id', async (req, res) => {
   // delete on tag by its `id` value
   try {

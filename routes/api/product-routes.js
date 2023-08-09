@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
-
+//GET ROUTE: Will select for entire Product table
 router.get('/', async (req, res) => {
   
   try{
@@ -17,38 +17,30 @@ router.get('/', async (req, res) => {
  
 });
 
-
+//GET ROUTE: Will select for specific row of Product Table
 router.get('/:id', (req, res) => {
 
   try {
-    const productData = Product.findAll(
+    const productData = Product.findByPk( req.params.id,
       {
-        include: [{model: Category}],
-        where: {
-          id: req.params.id
-        }
+        include: [{model: Category}]
       }
     );
 
-  if (!productData) {
-    res.status(404).json({message: 'No product found with this id. '})
-  }
-  } catch (err) {
+    if (!productData) {
+      res.status(404).json({message: 'No product found with this id. '})
+    }
+  return res.status(200).json(productData);
+
+ } catch (err) {
     res.status(500).json(err);
   }
 
 });
 
-// create new product
+//POST ROUTE: Will create a row or rows for the Product table
 router.post('/', (req, res) => {
-  /* req.body should look like this...
-    {
-      product_name: "Basketball",
-      price: 200.00,
-      stock: 3,
-      tagIds: [1, 2, 3, 4]
-    }
-  */
+
   Product.create(req.body)
     .then((product) => {
       // if there's product tags, we need to create pairings to bulk create in the ProductTag model
@@ -71,7 +63,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// update product
+// PUT ROUTE: Will make changes to the specified row of the Product table
 router.put('/:id', (req, res) => {
   // update product data
   Product.update(req.body, {
@@ -115,6 +107,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// DELETE ROUTE: Will delete a specific row of the Product table
 router.delete('/:id', async (req, res) => {
   try {
     const productData = await Product.destroy({
